@@ -4,7 +4,7 @@
 # 2022.
 # Cálculo de velocidad: sílabas y palabras. Script para Praat 6.3.
 # Para citar: Román, Domingo y Muñoz, Diana. 2022. Cálculo de velocidad: sílabas y palabras. Script para Praat 6.3. Alojado en 
-# 
+# https://github.com/ChumingoRoman/Diana_Munoz_Domingo_Roman/edit/main/CalculoVelocidadSilabasYPalabras.praat
 
 # Extrae las etiquetas de un TextGrid de un solo estrato
 # Las etiquetas deben tener dos valores númericos separados por una coma
@@ -20,20 +20,22 @@ for i to ene_intervalos
 	if etiqueta$ <> ""
 		largo_etiqueta = length(etiqueta$)
 		posicion_coma = index(etiqueta$, ",")
-		n_silabas$ = left$(etiqueta$, largo_etiqueta-posicion_coma)
+		n_silabas$ = left$(etiqueta$, largo_etiqueta-(posicion_coma-1))
 		n_silabas = number(n_silabas$)
-		n_palabras$ = right$(etiqueta$, largo_etiqueta-posicion_coma)
+		n_palabras$ = right$(etiqueta$, (largo_etiqueta - posicion_coma))
 		n_palabras = number(n_palabras$)
 
 		fin_intervalo = Get end time of interval: 1, 2
 		ini_intervalo = Get start time of interval: 1, 2
 		dur_intervalo = fin_intervalo-ini_intervalo
 
-		vel_sil_seg = n_silabas/dur_intervalo
+		sil_por_segundo = n_silabas/dur_intervalo
 
-		vel_pal_min = n_palabras*(dur_intervalo*60)/n_palabras
+		segundos_a_minutos = dur_intervalo/60
 
-		appendInfoLine: fixed$(vel_sil_seg,2), tab$, fixed$(vel_pal_min, 2)
+		palabras_por_minuto = n_palabras/segundos_a_minutos
+
+		appendInfoLine: fixed$(sil_por_segundo,2),tab$,fixed$(palabras_por_minuto,2)
 
 	endif
 
